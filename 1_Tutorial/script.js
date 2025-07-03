@@ -1,57 +1,50 @@
+
+
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-const canvas = document.getElementById('canvas1');
-const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+const canvas = document.getElementById('canvas1')
+const renderer = new THREE.WebGLRenderer({canvas:canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.z = 20;
+// document.body.appendChild(renderer.domElement);
 
-const geometries = [
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.SphereGeometry(1, 16, 16),
-    new THREE.PlaneGeometry(1.5, 1.5),
-    new THREE.TorusGeometry(1, 0.4, 16, 100),
-    new THREE.CylinderGeometry(0.5, 0.5, 2, 32),
-    new THREE.ConeGeometry(0.5, 1.5, 32),
-    new THREE.CircleGeometry(1, 32),
-    new THREE.RingGeometry(0.5, 1, 32),
-    new THREE.TetrahedronGeometry(1),
-    new THREE.DodecahedronGeometry(1),
-];
 
-const colors = [
-    "slategrey", "red", "blue", "orange", "purple",
-    "green", "gold", "pink", "cyan", "brown"
-];
+//geometry 1
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ color:"slategrey",wireframe:true });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
 
-const meshes = [];
 
-geometries.forEach((geometry, index) => {
-    const material = new THREE.MeshBasicMaterial({
-        color: colors[index],
-        wireframe: true
-    });
+//geometry 2
+const geometry2 = new THREE.SphereGeometry(1,5,5)
+const material2 = new THREE.MeshBasicMaterial({ color: "red", wireframe: true });
+const shape2 = new THREE.Mesh(geometry2, material2);
+scene.add(shape2);
 
-    const mesh = new THREE.Mesh(geometry, material);
+// geometry 3 
+//geometry 2
+const geometry3 = new THREE.PlaneGeometry(1, 1, 1)
+const material3 = new THREE.MeshBasicMaterial({ color: "blue", wireframe: true });
+const shape3 = new THREE.Mesh(geometry3, material3);
+scene.add(shape3);
 
-    // Position the mesh in a grid
-    const row = Math.floor(index / 5);
-    const col = index % 5;
-    mesh.position.x = (col - 2) * 3;  // spread columns
-    mesh.position.y = (1 - row) * 3; // spread rows
 
-    meshes.push(mesh);
-    scene.add(mesh);
-});
+camera.position.z =  11;
+cube.position.y=2
+shape2.position.y=-2
+shape3.position.y = -4
+
+
 
 function animate() {
-    requestAnimationFrame(animate);
+    cube.rotation.x += 0.01;
+    cube.rotation.y +=0.08;
+    shape2.rotation.x-=0.01;
+    shape2.rotation.y -= 0.08;
 
-    meshes.forEach((mesh, i) => {
-        mesh.rotation.x += 0.01 + i * 0.001;
-        mesh.rotation.y += 0.01 + i * 0.001;
-    });
-
+    
     renderer.render(scene, camera);
-}
+    
 
-animate();
+}
+renderer.setAnimationLoop(animate);
