@@ -32,6 +32,7 @@ geometries.forEach((geometry, index) => {
     });
 
     const mesh = new THREE.Mesh(geometry, material);
+    
 
     // Position the mesh in a grid
     const row = Math.floor(index / 5);
